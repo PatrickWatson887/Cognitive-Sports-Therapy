@@ -1,9 +1,3 @@
-# zART-Stack 🤯
-
-> **Z**ero-**A**PI, **R**eact, & **T**ypeScript
-
-**⚡️ Probably the fastest way to build a React Native app with your own backend ⚡️**
-
 ## Introduction
 
 A monorepo containing:
@@ -12,14 +6,6 @@ A monorepo containing:
 - React Native app with Expo
 - A [tRPC](https://trpc.io)-API which is inferred straight into the above.
 - [Prisma](http://prisma.io/) as a typesafe ORM
-
-> In tRPC you simply write API-functions that are automatically inferred straight into your frontend - no matter if it's React, React Native, or something else _(that is TS/JS-based)_.
-
-### Video
-
-> Very rough video recorded in 2 minutes 😅
-
-[![ZART](http://img.youtube.com/vi/dLLm6hgMhMQ/0.jpg)](http://www.youtube.com/watch?v=dLLm6hgMhMQ "Video Title")
 
 ## Requirements
 
@@ -58,7 +44,7 @@ Now - head over to one of the [`./apps`](./apps), whilist updating [a router in 
 │   ├── expo    # Expo/RN application
 │   └── nextjs  # Server-side rendered Next.js application
 ├── packages
-│   ├── api           # tRPC API 
+│   ├── api           # tRPC API
 │   ├── react         # Shared React-helpers
 │   └── react-native  # RN components. **Could** be shared between Expo & Next.js if you're in to that sort of thing.
 └── prisma      # Prisma setup
@@ -73,15 +59,3 @@ Now - head over to one of the [`./apps`](./apps), whilist updating [a router in 
 - Create a Postgres Database
 - Set env `DATABASE_URL` pointing towards that db
 - Configure *"Root Directory"* as `apps/nextjs` and tick _Include source files outside of the Root Directory in the Build Step_.
-
-
-### Questions?
-
-Shoot me a message [on Twitter](https://twitter.com/alexdotjs)!
-
-
-## Credits
-
-- tRPC and this example is made by [@alexdotjs](https://twitter.com/alexdotjs)
-- `apps/expo` is basically a copy-paste from [`expo-next-monorepo-example`](https://github.com/axeldelafosse/expo-next-monorepo-example) by [axeldelafosse](https://github.com/axeldelafosse).
-
