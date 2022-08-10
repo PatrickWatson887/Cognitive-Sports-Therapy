@@ -12,18 +12,6 @@ A monorepo containing:
 You will need docker compose to run the postgres database.
 It comes with the [Docker Desktop App](https://docs.docker.com/get-docker/)
 
-## Getting started
-
-```bash
-git clone git@github.com:KATT/zart.git
-cd zart
-yarn
-yarn dev
-```
-
-> Press `i` after `yarn dev` in to launch the iOS Simulator.
-
-Now - head over to one of the [`./apps`](./apps), whilist updating [a router in tRPC](./packages/api/src/routers) or the [Database Schema](./prisma/schema.prisma) and see that the data is directly inferred.
 
 ## Available commands
 
