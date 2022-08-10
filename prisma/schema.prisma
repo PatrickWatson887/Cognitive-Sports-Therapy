@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  id    String @id @default(uuid())
+  title String
+  text  String
+
+  // To return `Date`s intact through the API we need to add data transformers
+  // https://trpc.io/docs/data-transformers
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Users {
+  id    String         @id @default(uuid())
+  name  String         @unique
+  email String         @unique
+  role  user_role_enum @default(user)
+}
+
+model Credentials {
+  id       String  @id
+  username String  @unique
+  password String
+}
+
+enum user_role_enum {
+  user
+  premium
+  admin
+}
