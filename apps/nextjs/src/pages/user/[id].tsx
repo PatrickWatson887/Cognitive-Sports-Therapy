@@ -3,23 +3,26 @@ import { trpc } from 'utils/trpc';
 import NextError from 'next/error';
 
 export default function PostViewPage() {
-  const id = useRouter().query.id as string;
-  const userQuery = trpc.useQuery(['users.byId', id]);
-  if (userQuery.error) {
-    const statusCode = userQuery.error.data?.httpStatus ?? 500;
-    return (
-      <NextError title={userQuery.error.message} statusCode={statusCode} />
-    );
+  const uuid = useRouter().query.id as string;
+  const user = trpc.useQuery(['users.byUuid', uuid]);
+  const userDiaries = trpc.useQuery(['userDiaries.byUserUuid', uuid]);
+
+  if (user.error) {
+    const statusCode = user.error.data?.httpStatus ?? 500;
+    return <NextError title={user.error.message} statusCode={statusCode} />;
   }
-  if (userQuery.status === 'loading') {
+  if (user.status === 'loading') {
     return <>Loading...</>;
   }
   return (
     <>
-      <h1>{userQuery.data?.name}</h1>
+      <h1>{user.data?.username}</h1>
 
       <h2>Raw data:</h2>
-      <pre>{JSON.stringify(userQuery.data ?? null, null, 4)}</pre>
+      <pre>{JSON.stringify(user.data ?? null, null, 4)}</pre>
+
+      <h2>Raw data:</h2>
+      <pre>{JSON.stringify(userDiaries.data ?? null, null, 4)}</pre>
     </>
   );
 }

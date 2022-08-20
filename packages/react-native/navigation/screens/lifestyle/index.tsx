@@ -8,47 +8,44 @@ import {
 } from 'react-native';
 import { trpc } from '@zart/react/trpc';
 import { FlatList } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../RootStackPrams';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../RootStackPrams';
 import { useAppSelector, useAppDispatch } from '../../../store';
-import { selectUserName, setRole } from '../../slice/authSlice';
+import { selectUserUuid, setRole } from '../../slice/authSlice';
 
 type lifestyleScreenProp = StackNavigationProp<RootStackParamList, 'Lifestyle'>;
 
 export function LifestyleScreen() {
   const navigation = useNavigation<lifestyleScreenProp>();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
+  const user = trpc.useQuery(['users.byUuid', useAppSelector(selectUserUuid)]);
+  const diaries = trpc.useQuery(['diaries.all']);
 
-  const posts = trpc.useQuery(['post.all'], {
-    refetchInterval: 3000,
-  });
-
-  const user = trpc.useQuery(['users.byName',  useAppSelector(selectUserName)]);
   if (user.data) {
-    dispatch(setRole(user.data.role))
+    dispatch(setRole(user.data.role.title));
   }
   return (
     <SafeAreaView style={styles.container}>
-      {posts.data ? (
+      {diaries.data ? (
         <FlatList
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Explore')
+                navigation.navigate('Explore');
               }}
-              >
+            >
               <View style={styles.item}>
                 <Text>{item.title}</Text>
               </View>
             </TouchableOpacity>
           )}
-          data={posts.data}
-          keyExtractor={(item) => item.id}
+          data={diaries.data}
+          keyExtractor={(item) => item.uuid}
         />
       ) : (
-        <Text>{posts.status}</Text>
+        <Text>{diaries.status}</Text>
       )}
     </SafeAreaView>
   );

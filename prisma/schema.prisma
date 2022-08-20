@@ -10,32 +10,182 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id    String @id @default(uuid())
+model Roles {
+  uuid  String  @id @default(uuid())
   title String
-  text  String
+  total_members String
 
-  // To return `Date`s intact through the API we need to add data transformers
-  // https://trpc.io/docs/data-transformers
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  users Users[]
+}
+
+
+model Communities {
+  uuid  String  @id @default(uuid())
+  title String
+  total_members String
+
+  users Users[]
+}
+
+model Universities {
+  uuid  String  @id @default(uuid())
+  title String
+  total_members String
+  date_created DateTime @default(now())
+
+  users Users[]
+}
+
+model Diaries {
+  uuid  String  @id @default(uuid())
+  title String
+  description String
+  image_url String
+
+  users Users[]
+  userDiaries UserDiaries[]
+  userSessions UserSessions[]
 }
 
 model Users {
-  id    String         @id @default(uuid())
-  name  String         @unique
-  email String         @unique
-  role  user_role_enum @default(user)
+  uuid    String       @id
+  username String      @unique
+  email String
+  address String
+  phone_number String
+  date_created DateTime @default(now())
+
+  userDiaries UserDiaries[]
+  userSessions UserSessions[]
+
+  role Roles @relation(fields: [role_uuid], references: [uuid])
+  role_uuid String
+
+  community Communities @relation(fields: [community_uuid], references: [uuid])
+  community_uuid String
+
+  university Universities @relation(fields: [university_uuid], references: [uuid])
+  university_uuid String
+
+  diary Diaries @relation(fields: [diary_uuid], references: [uuid])
+  diary_uuid String
 }
+
+model UserDiaries {
+  uuid  String  @id @default(uuid())
+  total_clicks String?
+
+  diaryEntries DiaryEntries[]
+
+  user Users @relation(fields: [user_uuid], references: [uuid])
+  user_uuid String
+
+  diary Diaries @relation(fields: [diary_uuid], references: [uuid])
+  diary_uuid String
+}
+
+model DiaryEntries {
+  uuid  String  @id @default(uuid())
+  score String
+  date_created DateTime @default(now())
+
+  user_diary UserDiaries @relation(fields: [user_diary_uuid], references: [uuid])
+  user_diary_uuid String
+}
+
+model UserSessions {
+  uuid  String  @id @default(uuid())
+  expected_time_on String
+  actual_time_on String
+
+  user Users @relation(fields: [user_uuid], references: [uuid])
+  user_uuid String
+
+  diary Diaries @relation(fields: [diary_uuid], references: [uuid])
+  diary_uuid String
+}
+
+model Audios {
+  uuid  String  @id @default(uuid())
+  title String
+  image_url String
+  author String
+  date_created DateTime @default(now())
+  audio_url String
+  total_clicks String?
+  length String
+  updated_on DateTime?
+  description String
+
+  programmeSessions ProgrammeSessions[]
+}
+
+model Workouts {
+  uuid  String  @id @default(uuid())
+  title String
+  image_url String
+  author String
+  date_created DateTime @default(now())
+  video_url String
+  total_clicks String?
+  length String
+  updated_on DateTime?
+  description String
+
+  programmeSessions ProgrammeSessions[]
+}
+
+model Articles {
+  uuid  String  @id @default(uuid())
+  title String
+  image_url String
+  author String
+  date_created DateTime @default(now())
+  total_clicks String?
+  length String
+  updated_on DateTime?
+  body String
+
+  programmeSessions ProgrammeSessions[]
+}
+
+model Programmes {
+  uuid  String  @id @default(uuid())
+  title String
+  image_url String
+  author String
+  date_created DateTime @default(now())
+  total_clicks String?
+  length String
+  updated_on DateTime?
+  start_date DateTime
+  end_date DateTime
+
+  programmeSessions ProgrammeSessions[]
+}
+
+model ProgrammeSessions {
+  uuid  String  @id @default(uuid())
+  to_do_date_time DateTime
+  completed_at DateTime?
+  updated_on DateTime?
+
+  programme Programmes @relation(fields: [programme_uuid], references: [uuid])
+  programme_uuid String
+
+  workout Workouts @relation(fields: [workout_uuid], references: [uuid])
+  workout_uuid String
+
+  audio Audios @relation(fields: [audio_uuid], references: [uuid])
+  audio_uuid String
+
+  article Articles @relation(fields: [article_uuid], references: [uuid])
+  article_uuid String
+}
+
 
 model Credentials {
-  id       String  @id
+  uuid     String  @id
   username String  @unique
   password String
-}
-
-enum user_role_enum {
-  user
-  premium
-  admin
 }

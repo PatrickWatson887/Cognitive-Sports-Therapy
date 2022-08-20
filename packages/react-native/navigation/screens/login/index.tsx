@@ -1,40 +1,44 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { useAppDispatch } from '../../../store';
 import { setSignIn } from '../../slice/authSlice';
 import { trpc } from '@zart/react/trpc';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {LoginStackParamList} from '../RootStackPrams';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { LoginStackParamList } from '../RootStackPrams';
 
 type loginScreenProp = StackNavigationProp<LoginStackParamList, 'Login'>;
 
-
 export function LoginScreen() {
-  const dispatch = useAppDispatch()
-  const navigation = useNavigation<loginScreenProp>()
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation<loginScreenProp>();
 
-  const [ username, setEmail ] = useState('')
-  const [ password, setPassword ] = useState('')
+  const [username, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const { refetch, data, isLoading } = trpc.useQuery(['credentials.login', { username, password }], {enabled: false});
+  const { refetch, data, isLoading } = trpc.useQuery(
+    ['credentials.login', { username, password }],
+    { enabled: false },
+  );
 
   if (data?.valueOf() && !isLoading) {
-    dispatch(setSignIn({
-      isLoggedIn: true,
-      username,
-    }))
+    dispatch(
+      setSignIn({
+        isLoggedIn: true,
+        username,
+      }),
+    );
   }
 
   function handleLogin() {
-    if ( username === '' || password === '' ) return;
-    refetch()
+    if (username === '' || password === '') return;
+    refetch();
   }
 
   return (
@@ -58,64 +62,75 @@ export function LoginScreen() {
         />
       </View>
 
-      <TouchableOpacity onPress={()=> {navigation.navigate('ForgotPassword')}}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('ForgotPassword');
+        }}
+      >
         <Text style={styles.forgot_button}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=> {navigation.navigate('Signup')}}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Signup');
+        }}
+      >
         <Text style={styles.forgot_button}>Sign up</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={()=>{ handleLogin() }}>
+      <TouchableOpacity
+        style={styles.loginBtn}
+        onPress={() => {
+          handleLogin();
+        }}
+      >
         <Text>LOGIN</Text>
       </TouchableOpacity>
     </View>
-    );
-  }
+  );
+}
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
+  image: {
+    marginBottom: 40,
+  },
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-    },
+  inputView: {
+    backgroundColor: '#FFC0CB',
+    borderRadius: 30,
+    width: '70%',
+    height: 45,
+    marginBottom: 20,
 
-    image: {
-      marginBottom: 40,
-    },
+    alignItems: 'center',
+  },
 
-    inputView: {
-      backgroundColor: "#FFC0CB",
-      borderRadius: 30,
-      width: "70%",
-      height: 45,
-      marginBottom: 20,
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
+  },
 
-      alignItems: "center",
-    },
+  forgot_button: {
+    height: 30,
+    marginBottom: 30,
+  },
 
-    TextInput: {
-      height: 50,
-      flex: 1,
-      padding: 10,
-      marginLeft: 20,
-    },
-
-    forgot_button: {
-      height: 30,
-      marginBottom: 30,
-    },
-
-    loginBtn: {
-      width: "80%",
-      borderRadius: 25,
-      height: 50,
-      alignItems: "center",
-      justifyContent: "center",
-      marginTop: 40,
-      backgroundColor: "#FF1493",
-    },
-  });
+  loginBtn: {
+    width: '80%',
+    borderRadius: 25,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 40,
+    backgroundColor: '#FF1493',
+  },
+});

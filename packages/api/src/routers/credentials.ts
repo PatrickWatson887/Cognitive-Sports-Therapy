@@ -5,7 +5,7 @@ export const credentialsRouter = createRouter()
   // create
   .mutation('add', {
     input: z.object({
-      id: z.string().uuid(),
+      uuid: z.string(),
       username: z.string(),
       password: z.string(),
     }),
@@ -25,27 +25,26 @@ export const credentialsRouter = createRouter()
       const credentials = await ctx.prisma.credentials.findUnique({
         where: { username: input.username },
       });
-      if (!credentials) return false
+      if (!credentials) return false;
 
-      if (input.password !== credentials.password) return false
+      if (input.password !== credentials.password) return false;
 
-      return credentials.id
-
+      return credentials.uuid;
     },
   })
   // update
   .mutation('edit', {
     input: z.object({
-      id: z.string().uuid(),
+      username: z.string(),
       data: z.object({
-        title: z.string().min(1).max(32).optional(),
-        text: z.string().min(1).optional(),
+        username: z.string().min(1).optional(),
+        password: z.string().min(1).optional(),
       }),
     }),
     async resolve({ ctx, input }) {
-      const { id, data } = input;
+      const { username, data } = input;
       const credentials = await ctx.prisma.credentials.update({
-        where: { id },
+        where: { username },
         data,
       });
       return credentials;
@@ -53,9 +52,9 @@ export const credentialsRouter = createRouter()
   })
   // delete
   .mutation('delete', {
-    input: z.string().uuid(),
-    async resolve({ input: id, ctx }) {
-      await ctx.prisma.credentials.delete({ where: { id } });
-      return id;
+    input: z.string(),
+    async resolve({ input: username, ctx }) {
+      await ctx.prisma.credentials.delete({ where: { username } });
+      return username;
     },
   });
