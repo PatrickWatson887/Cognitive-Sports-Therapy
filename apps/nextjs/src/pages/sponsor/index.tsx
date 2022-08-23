@@ -2,30 +2,26 @@ import Link from 'next/link';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { trpc } from '../../utils/trpc';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
 
 type FormValues = {
   title: string;
-  description: string;
-  image_url: string;
+  total_members: string;
 };
 
 export default function IndexPage() {
   const { register, handleSubmit } = useForm<FormValues>();
   const utils = trpc.useContext();
-  const [file, setFile] = useState<any>();
 
-  const diaryQuery = trpc.useQuery(['diaries.all']);
-  const addDiary = trpc.useMutation('diaries.add', {
+  const sponsorQuery = trpc.useQuery(['sponsors.all']);
+  const addUniversity = trpc.useMutation('sponsors.add', {
     onSettled() {
-      return utils.invalidateQuery(['diaries.all']);
+      return utils.invalidateQuery(['sponsors.all']);
     },
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      data.image_url = '';
-      await addDiary.mutateAsync(data);
+      await addUniversity.mutateAsync(data);
     } catch {}
   };
 
@@ -33,13 +29,13 @@ export default function IndexPage() {
     <>
       <div className="grid grid-column-1 mx-auto w-1/3 shadow p-4 rounded-xl">
         <h2 className="mx-auto">
-          Diaries
-          {diaryQuery.status === 'loading' && '(loading)'}
+          Sponsors
+          {sponsorQuery.status === 'loading' && '(loading)'}
         </h2>
-        {diaryQuery.data?.map((item) => (
+        {sponsorQuery.data?.map((item) => (
           <article key={item.uuid}>
             <h3>{item.title}</h3>
-            <Link href={`/diary/${item.uuid}`}>
+            <Link href={`/sponsor/${item.uuid}`}>
               <a>View more</a>
             </Link>
           </article>
@@ -47,26 +43,16 @@ export default function IndexPage() {
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-column-1 mx-auto w-1/3 shadow p-4 rounded-xl justify-center">
-          <label className="mx-auto">Add a diary</label>
+          <label className="mx-auto">Add a sponsor</label>
           <label>Title</label>
           <input
             className="border border-2 mb-4 rounded-md"
             {...register('title')}
           />
-          <label>Description</label>
+          <label>Total Members</label>
           <input
             className="border border-2 mb-4 rounded-md"
-            {...register('description')}
-          />
-          <label>Image</label>
-          <input
-            type="file"
-            className="border border-2 mb-4 rounded-md"
-            {...register('image_url')}
-            onChange={(e) => {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              setFile(e.target.files![0]);
-            }}
+            {...register('total_members')}
           />
           <input className="bg-green-200 rounded-md" type="submit" />
         </div>

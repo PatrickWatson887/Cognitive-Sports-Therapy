@@ -10,7 +10,7 @@ type FormValues = {
   email: string;
   address: string;
   phone_number: string;
-  university_uuid: string;
+  sponsor_uuid: string;
   community_uuid: string;
   diary_uuid: string;
   role_uuid: string;
@@ -29,7 +29,7 @@ export default function IndexPage() {
   });
   const addCredential = trpc.useMutation('credentials.add');
 
-  const universityQuery = trpc.useQuery(['universities.all']);
+  const sponsorQuery = trpc.useQuery(['sponsors.all']);
   const diaryQuery = trpc.useQuery(['diaries.all']);
   const communityQuery = trpc.useQuery(['communities.all']);
   const roleQuery = trpc.useQuery(['roles.all']);
@@ -43,7 +43,7 @@ export default function IndexPage() {
         email: data.email,
         address: data.address,
         phone_number: data.phone_number,
-        university_uuid: data.university_uuid,
+        sponsor_uuid: data.sponsor_uuid,
         community_uuid: data.community_uuid,
         diary_uuid: data.diary_uuid,
         role_uuid: data.role_uuid,
@@ -102,15 +102,15 @@ export default function IndexPage() {
             className="border border-2 mb-4 rounded-md"
             {...register('phone_number')}
           />
-          <label>University</label>
+          <label>Sponsor</label>
           <select
             className="border border-2 mb-4 rounded-md"
-            {...register('university_uuid')}
+            {...register('sponsor_uuid')}
           >
             <option value="">Select...</option>
-            {universityQuery.data?.map((university) => (
-              <option key={university.uuid} value={university.uuid}>
-                {university.title}
+            {sponsorQuery.data?.map((sponsor) => (
+              <option key={sponsor.uuid} value={sponsor.uuid}>
+                {sponsor.title}
               </option>
             ))}
           </select>

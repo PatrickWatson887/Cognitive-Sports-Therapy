@@ -6,12 +6,13 @@ export default function IndexPage() {
     'user',
     'community',
     'diary',
-    'university',
+    'sponsor',
     'role',
     'article',
     'audio',
     'workout',
     'programme',
+    'video',
   ];
   return (
     <>
@@ -19,7 +20,9 @@ export default function IndexPage() {
         <label className="text-2xl pb-10">Admin Panel</label>
         {menu.map((option, index) => (
           <Link key={index} href={`/${option}`}>
-            <a className="mb-2">Add/View {option}</a>
+            <a className="mb-2 shadow rounded-md m-2 p-4 hover:bg-green-200 mx-auto">
+              Add/View {option}
+            </a>
           </Link>
         ))}
       </div>

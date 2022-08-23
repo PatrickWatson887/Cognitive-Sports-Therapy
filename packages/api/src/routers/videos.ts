@@ -2,28 +2,24 @@ import { createRouter } from '../createRouter';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 
-export const workoutsRouter = createRouter()
+export const videosRouter = createRouter()
   // create
   .mutation('add', {
     input: z.object({
       title: z.string(),
-      image_url: z.string(),
-      author: z.string(),
-      length: z.string(),
-      description: z.string(),
-      video_uuid: z.string(),
+      video_url: z.string(),
     }),
     async resolve({ ctx, input }) {
-      const workouts = await ctx.prisma.workouts.create({
+      const videos = await ctx.prisma.videos.create({
         data: input,
       });
-      return workouts;
+      return videos;
     },
   })
   // read
   .query('all', {
     async resolve({ ctx }) {
-      return ctx.prisma.workouts.findMany({
+      return ctx.prisma.videos.findMany({
         select: {
           uuid: true,
           title: true,
@@ -34,17 +30,16 @@ export const workoutsRouter = createRouter()
   .query('byUuid', {
     input: z.string(),
     async resolve({ ctx, input }) {
-      const workouts = await ctx.prisma.workouts.findUnique({
+      const videos = await ctx.prisma.videos.findUnique({
         where: { uuid: input },
-        include: { video: true },
       });
-      if (!workouts) {
+      if (!videos) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `No workouts with uuid '${input}'`,
+          message: `No videos with uuid '${input}'`,
         });
       }
-      return workouts;
+      return videos;
     },
   })
   // update
@@ -58,18 +53,18 @@ export const workoutsRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       const { uuid, data } = input;
-      const workouts = await ctx.prisma.workouts.update({
+      const videos = await ctx.prisma.videos.update({
         where: { uuid },
         data,
       });
-      return workouts;
+      return videos;
     },
   })
   // delete
   .mutation('delete', {
     input: z.string().uuid(),
     async resolve({ input: uuid, ctx }) {
-      await ctx.prisma.workouts.delete({ where: { uuid } });
+      await ctx.prisma.videos.delete({ where: { uuid } });
       return uuid;
     },
   });

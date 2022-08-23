@@ -7,13 +7,16 @@ import { usersRouter } from './users';
 import { credentialsRouter } from './credentials';
 import { communitiesRouter } from './communities';
 import { diariesRouter } from './diaries';
-import { universitiesRouter } from './universities';
+import { sponsorsRouter } from './sponsors';
 import { rolesRouter } from './roles';
 import { userDiariesRouter } from './userDiaries';
 import { audiosRouter } from './audios';
 import { articleRouter } from './articles';
 import { workoutsRouter } from './workouts';
 import { programmesRouter } from './programmes';
+import { programmeSessionsRouter } from './programmeSessions';
+import { videosRouter } from './videos';
+import { resourcesRouter } from './resources';
 
 /**
  * Create your application's root router
@@ -36,12 +39,15 @@ export const appRouter = createRouter()
   .merge('credentials.', credentialsRouter)
   .merge('communities.', communitiesRouter)
   .merge('diaries.', diariesRouter)
-  .merge('universities.', universitiesRouter)
+  .merge('sponsors.', sponsorsRouter)
   .merge('roles.', rolesRouter)
   .merge('userDiaries.', userDiariesRouter)
   .merge('audios.', audiosRouter)
   .merge('articles.', articleRouter)
   .merge('workouts.', workoutsRouter)
-  .merge('programmes.', programmesRouter);
+  .merge('programmes.', programmesRouter)
+  .merge('programmeSessions.', programmeSessionsRouter)
+  .merge('videos.', videosRouter)
+  .merge('resources.', resourcesRouter);
 
 export type AppRouter = typeof appRouter;

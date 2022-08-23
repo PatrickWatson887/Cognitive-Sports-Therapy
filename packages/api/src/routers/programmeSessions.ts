@@ -2,31 +2,30 @@ import { createRouter } from '../createRouter';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 
-export const programmesRouter = createRouter()
+export const programmeSessionsRouter = createRouter()
   // create
   .mutation('add', {
     input: z.object({
-      title: z.string(),
-      image_url: z.string(),
-      author: z.string(),
-      length: z.string(),
-      start_date: z.date(),
-      end_date: z.date(),
+      to_do_date_time: z.date(),
+      programme_uuid: z.string().optional(),
+      workout_uuid: z.string().optional(),
+      audio_uuid: z.string().optional(),
+      article_uuid: z.string().optional(),
     }),
     async resolve({ ctx, input }) {
-      const programmes = await ctx.prisma.programmes.create({
+      const programmeSessions = await ctx.prisma.programmeSessions.create({
         data: input,
       });
-      return programmes;
+      return programmeSessions;
     },
   })
   // read
   .query('all', {
     async resolve({ ctx }) {
-      return ctx.prisma.programmes.findMany({
+      return ctx.prisma.programmeSessions.findMany({
         select: {
           uuid: true,
-          title: true,
+          to_do_date_time: true,
         },
       });
     },
@@ -34,16 +33,16 @@ export const programmesRouter = createRouter()
   .query('byUuid', {
     input: z.string(),
     async resolve({ ctx, input }) {
-      const programmes = await ctx.prisma.programmes.findUnique({
+      const programmeSessions = await ctx.prisma.programmeSessions.findUnique({
         where: { uuid: input },
       });
-      if (!programmes) {
+      if (!programmeSessions) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `No programmes with uuid '${input}'`,
+          message: `No programmeSessions with uuid '${input}'`,
         });
       }
-      return programmes;
+      return programmeSessions;
     },
   })
   // update
@@ -51,24 +50,24 @@ export const programmesRouter = createRouter()
     input: z.object({
       uuid: z.string().uuid(),
       data: z.object({
-        title: z.string().min(1).max(32).optional(),
-        total_members: z.string().min(1).optional(),
+        // title: z.string().min(1).max(32).optional(),
+        // total_members: z.string().min(1).optional(),
       }),
     }),
     async resolve({ ctx, input }) {
       const { uuid, data } = input;
-      const programmes = await ctx.prisma.programmes.update({
+      const programmeSessions = await ctx.prisma.programmeSessions.update({
         where: { uuid },
         data,
       });
-      return programmes;
+      return programmeSessions;
     },
   })
   // delete
   .mutation('delete', {
     input: z.string().uuid(),
     async resolve({ input: uuid, ctx }) {
-      await ctx.prisma.programmes.delete({ where: { uuid } });
+      await ctx.prisma.programmeSessions.delete({ where: { uuid } });
       return uuid;
     },
   });

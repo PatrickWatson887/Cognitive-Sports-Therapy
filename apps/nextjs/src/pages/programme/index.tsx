@@ -13,16 +13,19 @@ type FormValues = {
   length: string;
   start_date: Date;
   end_date: Date;
+  user_uuid: string;
 };
 
 export default function IndexPage() {
   const { register, handleSubmit } = useForm<FormValues>();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [file, setFile] = useState<any>();
 
   const utils = trpc.useContext();
 
   const programmeQuery = trpc.useQuery(['programmes.all']);
+  const userQuery = trpc.useQuery(['users.all']);
   const addProgramme = trpc.useMutation('programmes.add', {
     onSettled() {
       return utils.invalidateQuery(['programmes.all']);
@@ -32,6 +35,7 @@ export default function IndexPage() {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     data.start_date = startDate;
     data.end_date = endDate;
+    data.image_url = '';
 
     try {
       await addProgramme.mutateAsync(data);
@@ -46,12 +50,15 @@ export default function IndexPage() {
           {programmeQuery.status === 'loading' && '(loading)'}
         </h2>
         {programmeQuery.data?.map((item) => (
-          <article key={item.uuid}>
-            <h3>{item.title}</h3>
-            <Link href={`/programme/${item.uuid}`}>
-              <a>View more</a>
-            </Link>
-          </article>
+          <>
+            <article key={item.uuid}>
+              <h3>{item.title}</h3>
+              <Link href={`/programme/${item.uuid}`}>
+                <a>View more</a>
+              </Link>
+            </article>
+            <br />
+          </>
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -62,10 +69,15 @@ export default function IndexPage() {
             className="border border-2 mb-4 rounded-md"
             {...register('title')}
           />
-          <label>Image Url</label>
+          <label>Image</label>
           <input
+            type="file"
             className="border border-2 mb-4 rounded-md"
             {...register('image_url')}
+            onChange={(e) => {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              setFile(e.target.files![0]);
+            }}
           />
           <label>Author</label>
           <input
@@ -77,12 +89,27 @@ export default function IndexPage() {
             className="border border-2 mb-4 rounded-md"
             {...register('length')}
           />
+          <label>User</label>
+          <select
+            className="border border-2 mb-4 rounded-md"
+            {...register('user_uuid')}
+          >
+            <option value="">Select...</option>
+            {userQuery.data?.map((user) => (
+              <option key={user.uuid} value={user.uuid}>
+                {user.username}
+              </option>
+            ))}
+          </select>
           <label>Start Date</label>
           <DatePicker
             className="border border-2 mb-4 rounded-md"
             selected={startDate}
             {...register('start_date')}
-            onChange={(date: Date) => setStartDate(date)}
+            onChange={(date: Date) => {
+              setStartDate(date);
+              console.log(date);
+            }}
           />
           <label>End Date</label>
           <DatePicker

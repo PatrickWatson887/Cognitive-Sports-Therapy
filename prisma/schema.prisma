@@ -27,12 +27,13 @@ model Communities {
   users Users[]
 }
 
-model Universities {
+model Sponsors {
   uuid  String  @id @default(uuid())
   title String
   total_members String
   date_created DateTime @default(now())
 
+  resources Resources[]
   users Users[]
 }
 
@@ -57,6 +58,7 @@ model Users {
 
   userDiaries UserDiaries[]
   userSessions UserSessions[]
+  programmes Programmes[]
 
   role Roles @relation(fields: [role_uuid], references: [uuid])
   role_uuid String
@@ -64,8 +66,8 @@ model Users {
   community Communities @relation(fields: [community_uuid], references: [uuid])
   community_uuid String
 
-  university Universities @relation(fields: [university_uuid], references: [uuid])
-  university_uuid String
+  sponsor Sponsors @relation(fields: [sponsor_uuid], references: [uuid])
+  sponsor_uuid String
 
   diary Diaries @relation(fields: [diary_uuid], references: [uuid])
   diary_uuid String
@@ -126,11 +128,13 @@ model Workouts {
   image_url String
   author String
   date_created DateTime @default(now())
-  video_url String
   total_clicks String?
   length String
   updated_on DateTime?
   description String
+
+  video Videos? @relation(fields: [video_uuid], references: [uuid])
+  video_uuid String?
 
   programmeSessions ProgrammeSessions[]
 }
@@ -162,6 +166,10 @@ model Programmes {
   end_date DateTime
 
   programmeSessions ProgrammeSessions[]
+
+  user Users @relation(fields: [user_uuid], references: [uuid])
+  user_uuid String
+
 }
 
 model ProgrammeSessions {
@@ -170,17 +178,37 @@ model ProgrammeSessions {
   completed_at DateTime?
   updated_on DateTime?
 
-  programme Programmes @relation(fields: [programme_uuid], references: [uuid])
-  programme_uuid String
+  programme Programmes? @relation(fields: [programme_uuid], references: [uuid])
+  programme_uuid String?
 
-  workout Workouts @relation(fields: [workout_uuid], references: [uuid])
-  workout_uuid String
+  workout Workouts? @relation(fields: [workout_uuid], references: [uuid])
+  workout_uuid String?
 
-  audio Audios @relation(fields: [audio_uuid], references: [uuid])
-  audio_uuid String
+  audio Audios? @relation(fields: [audio_uuid], references: [uuid])
+  audio_uuid String?
 
-  article Articles @relation(fields: [article_uuid], references: [uuid])
-  article_uuid String
+  article Articles? @relation(fields: [article_uuid], references: [uuid])
+  article_uuid String?
+}
+
+model Videos {
+  uuid  String  @id @default(uuid())
+  title String
+  video_url String
+
+  workouts Workouts[]
+}
+
+model Resources {
+  uuid  String  @id @default(uuid())
+  title String
+  address String
+  description String
+  updated_on DateTime?
+  date_created DateTime @default(now())
+
+  sponsor Sponsors @relation(fields: [sponsor_uuid], references: [uuid])
+  sponsor_uuid String
 }
 
 

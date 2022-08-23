@@ -2,28 +2,24 @@ import { createRouter } from '../createRouter';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 
-export const workoutsRouter = createRouter()
+export const sponsorsRouter = createRouter()
   // create
   .mutation('add', {
     input: z.object({
       title: z.string(),
-      image_url: z.string(),
-      author: z.string(),
-      length: z.string(),
-      description: z.string(),
-      video_uuid: z.string(),
+      total_members: z.string(),
     }),
     async resolve({ ctx, input }) {
-      const workouts = await ctx.prisma.workouts.create({
+      const sponsors = await ctx.prisma.sponsors.create({
         data: input,
       });
-      return workouts;
+      return sponsors;
     },
   })
   // read
   .query('all', {
     async resolve({ ctx }) {
-      return ctx.prisma.workouts.findMany({
+      return ctx.prisma.sponsors.findMany({
         select: {
           uuid: true,
           title: true,
@@ -34,17 +30,17 @@ export const workoutsRouter = createRouter()
   .query('byUuid', {
     input: z.string(),
     async resolve({ ctx, input }) {
-      const workouts = await ctx.prisma.workouts.findUnique({
+      const sponsors = await ctx.prisma.sponsors.findUnique({
         where: { uuid: input },
-        include: { video: true },
+        include: { resources: true },
       });
-      if (!workouts) {
+      if (!sponsors) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `No workouts with uuid '${input}'`,
+          message: `No sponsors with uuid '${input}'`,
         });
       }
-      return workouts;
+      return sponsors;
     },
   })
   // update
@@ -58,18 +54,18 @@ export const workoutsRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       const { uuid, data } = input;
-      const workouts = await ctx.prisma.workouts.update({
+      const sponsors = await ctx.prisma.sponsors.update({
         where: { uuid },
         data,
       });
-      return workouts;
+      return sponsors;
     },
   })
   // delete
   .mutation('delete', {
     input: z.string().uuid(),
     async resolve({ input: uuid, ctx }) {
-      await ctx.prisma.workouts.delete({ where: { uuid } });
+      await ctx.prisma.sponsors.delete({ where: { uuid } });
       return uuid;
     },
   });

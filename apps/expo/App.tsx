@@ -1,4 +1,3 @@
-
 import { theme } from '@zart/react-native/theme';
 import { DripsyProvider } from 'dripsy';
 import Constants from 'expo-constants';
@@ -9,12 +8,11 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { transformer, trpc } from './utils/trpc';
 import { Provider } from 'react-redux';
 import { store } from '@zart/react-native/store';
-import { AppWithNavigation } from '@zart/react-native/navigation'
+import { AppWithNavigation } from '@zart/react-native/navigation';
 
 enableScreens(true);
 const { manifest } = Constants;
 const localhost = `http://${manifest.debuggerHost?.split(':').shift()}:3000`;
-
 
 export default function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -30,16 +28,16 @@ export default function App() {
   );
 
   return (
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <QueryClientProvider client={queryClient}>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <DripsyProvider theme={theme}>
             <SafeAreaProvider>
-              <AppWithNavigation/>
+              <AppWithNavigation />
             </SafeAreaProvider>
           </DripsyProvider>
-          </Provider>
-        </QueryClientProvider>
-      </trpc.Provider>
+        </Provider>
+      </QueryClientProvider>
+    </trpc.Provider>
   );
 }

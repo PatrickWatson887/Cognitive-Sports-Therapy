@@ -2,7 +2,7 @@ import { createRouter } from '../createRouter';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 
-export const universitiesRouter = createRouter()
+export const sponsorsRouter = createRouter()
   // create
   .mutation('add', {
     input: z.object({
@@ -10,16 +10,16 @@ export const universitiesRouter = createRouter()
       total_members: z.string(),
     }),
     async resolve({ ctx, input }) {
-      const universities = await ctx.prisma.universities.create({
+      const sponsors = await ctx.prisma.sponsors.create({
         data: input,
       });
-      return universities;
+      return sponsors;
     },
   })
   // read
   .query('all', {
     async resolve({ ctx }) {
-      return ctx.prisma.universities.findMany({
+      return ctx.prisma.sponsors.findMany({
         select: {
           uuid: true,
           title: true,
@@ -30,16 +30,16 @@ export const universitiesRouter = createRouter()
   .query('byUuid', {
     input: z.string(),
     async resolve({ ctx, input }) {
-      const universities = await ctx.prisma.universities.findUnique({
+      const sponsors = await ctx.prisma.sponsors.findUnique({
         where: { uuid: input },
       });
-      if (!universities) {
+      if (!sponsors) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `No universities with uuid '${input}'`,
+          message: `No sponsors with uuid '${input}'`,
         });
       }
-      return universities;
+      return sponsors;
     },
   })
   // update
@@ -53,18 +53,18 @@ export const universitiesRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       const { uuid, data } = input;
-      const universities = await ctx.prisma.universities.update({
+      const sponsors = await ctx.prisma.sponsors.update({
         where: { uuid },
         data,
       });
-      return universities;
+      return sponsors;
     },
   })
   // delete
   .mutation('delete', {
     input: z.string().uuid(),
     async resolve({ input: uuid, ctx }) {
-      await ctx.prisma.universities.delete({ where: { uuid } });
+      await ctx.prisma.sponsors.delete({ where: { uuid } });
       return uuid;
     },
   });

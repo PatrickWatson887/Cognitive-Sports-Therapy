@@ -2,19 +2,21 @@ import Link from 'next/link';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { trpc } from '../../utils/trpc';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState } from 'react';
 
 type FormValues = {
   title: string;
   image_url: string;
   author: string;
-  video_url: string;
   length: string;
   description: string;
+  video_uuid: string;
 };
 
 export default function IndexPage() {
   const { register, handleSubmit } = useForm<FormValues>();
   const utils = trpc.useContext();
+  const [file, setFile] = useState<any>();
 
   const workoutQuery = trpc.useQuery(['workouts.all']);
   const addWorkout = trpc.useMutation('workouts.add', {
@@ -23,8 +25,11 @@ export default function IndexPage() {
     },
   });
 
+  const videoQuery = trpc.useQuery(['videos.all']);
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
+      data.image_url = '';
       await addWorkout.mutateAsync(data);
     } catch {}
   };
@@ -53,16 +58,28 @@ export default function IndexPage() {
             className="border border-2 mb-4 rounded-md"
             {...register('title')}
           />
-          <label>Image Url</label>
+          <label>Image</label>
           <input
+            type="file"
             className="border border-2 mb-4 rounded-md"
             {...register('image_url')}
+            onChange={(e) => {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              setFile(e.target.files![0]);
+            }}
           />
-          <label>Video Url</label>
-          <input
+          <label>Video</label>
+          <select
             className="border border-2 mb-4 rounded-md"
-            {...register('video_url')}
-          />
+            {...register('video_uuid')}
+          >
+            <option value="">Select...</option>
+            {videoQuery.data?.map((video) => (
+              <option key={video.uuid} value={video.uuid}>
+                {video.title}
+              </option>
+            ))}
+          </select>
           <label>Author</label>
           <input
             className="border border-2 mb-4 rounded-md"

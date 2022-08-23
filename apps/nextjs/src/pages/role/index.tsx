@@ -13,7 +13,7 @@ export default function IndexPage() {
   const utils = trpc.useContext();
 
   const roleQuery = trpc.useQuery(['roles.all']);
-  const addUniversity = trpc.useMutation('roles.add', {
+  const addRole = trpc.useMutation('roles.add', {
     onSettled() {
       return utils.invalidateQuery(['roles.all']);
     },
@@ -21,7 +21,7 @@ export default function IndexPage() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      await addUniversity.mutateAsync(data);
+      await addRole.mutateAsync(data);
     } catch {}
   };
 

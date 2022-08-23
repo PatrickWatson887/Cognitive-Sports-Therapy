@@ -12,6 +12,7 @@ export const programmesRouter = createRouter()
       length: z.string(),
       start_date: z.date(),
       end_date: z.date(),
+      user_uuid: z.string(),
     }),
     async resolve({ ctx, input }) {
       const programmes = await ctx.prisma.programmes.create({
@@ -36,6 +37,11 @@ export const programmesRouter = createRouter()
     async resolve({ ctx, input }) {
       const programmes = await ctx.prisma.programmes.findUnique({
         where: { uuid: input },
+        include: {
+          programmeSessions: {
+            include: { workout: true, article: true, audio: true },
+          },
+        },
       });
       if (!programmes) {
         throw new TRPCError({
