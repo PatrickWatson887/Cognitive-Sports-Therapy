@@ -13,7 +13,7 @@ type FormValues = {
   sponsor_uuid: string;
   community_uuid: string;
   diary_uuid: string;
-  role_uuid: string;
+  role_title: string;
   password: string;
 };
 
@@ -46,7 +46,7 @@ export default function IndexPage() {
         sponsor_uuid: data.sponsor_uuid,
         community_uuid: data.community_uuid,
         diary_uuid: data.diary_uuid,
-        role_uuid: data.role_uuid,
+        role_title: data.role_title,
       });
       await addCredential.mutateAsync({
         uuid: userUuid,
@@ -141,11 +141,11 @@ export default function IndexPage() {
           <label>Role</label>
           <select
             className="border border-2 mb-4 rounded-md"
-            {...register('role_uuid')}
+            {...register('role_title')}
           >
             <option value="">Select...</option>
             {roleQuery.data?.map((role) => (
-              <option key={role.uuid} value={role.uuid}>
+              <option key={role.title} value={role.title}>
                 {role.title}
               </option>
             ))}

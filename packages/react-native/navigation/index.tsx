@@ -15,16 +15,19 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useAppSelector } from '../store';
 import {
   selectIsLoggedIn,
   selectUserName,
+  selectUserUuid,
+  setRole,
 } from '@zart/react-native/navigation/slice/authSlice';
 import { DiariesDetails } from './screens/lifestyle/details';
 import { BreathDetails } from './screens/breath/details';
 import { BodyDetails } from './screens/physical/details';
 import { MindDetails } from './screens/mind/details';
 import { ProgrammeDetails } from './screens/programmes/details';
+import { useAppSelector, useAppDispatch } from '../store';
+import { trpc } from '@zart/react/trpc';
 
 function LifestyleStackScreen() {
   const LifestyleStack = createStackNavigator();
@@ -86,11 +89,17 @@ function ProgrammeStackScreen() {
 
 export function AppWithNavigation() {
   const Tab = createBottomTabNavigator();
+  const dispatch = useAppDispatch();
+
+  const user = trpc.useQuery(['users.byUuid', useAppSelector(selectUserUuid)]);
 
   const LoginStack = createStackNavigator();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const username = useAppSelector(selectUserName);
 
+  if (user.data) {
+    dispatch(setRole(user.data.role.title));
+  }
   return (
     <NavigationContainer>
       {isLoggedIn ? (
@@ -228,30 +237,32 @@ export function AppWithNavigation() {
               ),
             })}
           />
-          <Tab.Screen
-            name="Programmes"
-            component={ProgrammeStackScreen}
-            options={({ navigation }) => ({
-              headerRight: () => (
-                <Ionicons
-                  onPress={() => navigation.navigate('Explore')}
-                  name="search-outline"
-                  color="gray"
-                  size={32}
-                  style={{ paddingRight: 16 }}
-                />
-              ),
-              headerLeft: () => (
-                <Ionicons
-                  onPress={() => navigation.navigate('Profile')}
-                  name="person-outline"
-                  color="gray"
-                  size={32}
-                  style={{ paddingLeft: 16 }}
-                />
-              ),
-            })}
-          />
+          {user.data?.role.title === 'premium' ? (
+            <Tab.Screen
+              name="Programmes"
+              component={ProgrammeStackScreen}
+              options={({ navigation }) => ({
+                headerRight: () => (
+                  <Ionicons
+                    onPress={() => navigation.navigate('Explore')}
+                    name="search-outline"
+                    color="gray"
+                    size={32}
+                    style={{ paddingRight: 16 }}
+                  />
+                ),
+                headerLeft: () => (
+                  <Ionicons
+                    onPress={() => navigation.navigate('Profile')}
+                    name="person-outline"
+                    color="gray"
+                    size={32}
+                    style={{ paddingLeft: 16 }}
+                  />
+                ),
+              })}
+            />
+          ) : null}
           <Tab.Screen
             name="Explore"
             component={ExploreScreen}

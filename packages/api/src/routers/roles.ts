@@ -21,17 +21,16 @@ export const rolesRouter = createRouter()
     async resolve({ ctx }) {
       return ctx.prisma.roles.findMany({
         select: {
-          uuid: true,
           title: true,
         },
       });
     },
   })
-  .query('byUuid', {
+  .query('byTitle', {
     input: z.string(),
     async resolve({ ctx, input }) {
       const roles = await ctx.prisma.roles.findUnique({
-        where: { uuid: input },
+        where: { title: input },
       });
       if (!roles) {
         throw new TRPCError({
@@ -45,16 +44,16 @@ export const rolesRouter = createRouter()
   // update
   .mutation('edit', {
     input: z.object({
-      uuid: z.string().uuid(),
+      title: z.string(),
       data: z.object({
         title: z.string().min(1).max(32).optional(),
         total_members: z.string().min(1).optional(),
       }),
     }),
     async resolve({ ctx, input }) {
-      const { uuid, data } = input;
+      const { title, data } = input;
       const roles = await ctx.prisma.roles.update({
-        where: { uuid },
+        where: { title },
         data,
       });
       return roles;
@@ -62,9 +61,9 @@ export const rolesRouter = createRouter()
   })
   // delete
   .mutation('delete', {
-    input: z.string().uuid(),
-    async resolve({ input: uuid, ctx }) {
-      await ctx.prisma.roles.delete({ where: { uuid } });
-      return uuid;
+    input: z.string(),
+    async resolve({ input: title, ctx }) {
+      await ctx.prisma.roles.delete({ where: { title } });
+      return title;
     },
   });

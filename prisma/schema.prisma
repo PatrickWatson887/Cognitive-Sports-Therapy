@@ -11,8 +11,7 @@ generator client {
 }
 
 model Roles {
-  uuid  String  @id @default(uuid())
-  title String
+  title String  @id
   total_members String
 
   users Users[]
@@ -60,8 +59,8 @@ model Users {
   userSessions UserSessions[]
   programmes Programmes[]
 
-  role Roles @relation(fields: [role_uuid], references: [uuid])
-  role_uuid String
+  role Roles @relation(fields: [role_title], references: [title])
+  role_title String
 
   community Communities @relation(fields: [community_uuid], references: [uuid])
   community_uuid String

@@ -32,6 +32,7 @@ export function LoginScreen() {
       setSignIn({
         isLoggedIn: true,
         username,
+        uuid: data,
       }),
     );
   }

@@ -52,6 +52,26 @@ export const programmesRouter = createRouter()
       return programmes;
     },
   })
+  .query('byUserUuid', {
+    input: z.string(),
+    async resolve({ ctx, input }) {
+      const programmes = await ctx.prisma.programmes.findMany({
+        where: { user_uuid: input },
+        include: {
+          programmeSessions: {
+            include: { workout: true, article: true, audio: true },
+          },
+        },
+      });
+      if (!programmes) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `No programmes with uuid '${input}'`,
+        });
+      }
+      return programmes;
+    },
+  })
   // update
   .mutation('edit', {
     input: z.object({

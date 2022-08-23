@@ -21,14 +21,10 @@ type lifestyleScreenProp = StackNavigationProp<
 
 export function LifestyleScreen() {
   const navigation = useNavigation<lifestyleScreenProp>();
-  const dispatch = useAppDispatch();
 
-  const user = trpc.useQuery(['users.byUuid', useAppSelector(selectUserUuid)]);
   const diaries = trpc.useQuery(['diaries.all']);
 
-  if (user.data) {
-    dispatch(setRole(user.data.role.title));
-  }
+
   return (
     <SafeAreaView style={styles.container}>
       {diaries.data ? (

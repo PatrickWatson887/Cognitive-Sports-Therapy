@@ -14,7 +14,7 @@ export const usersRouter = createRouter()
       sponsor_uuid: z.string(),
       community_uuid: z.string(),
       diary_uuid: z.string(),
-      role_uuid: z.string(),
+      role_title: z.string(),
     }),
     async resolve({ ctx, input }) {
       const users = await ctx.prisma.users.create({
@@ -69,6 +69,21 @@ export const usersRouter = createRouter()
         });
       }
       return user;
+    },
+  })
+  .query('byRole', {
+    input: z.string(),
+    async resolve({ ctx, input }) {
+      const users = await ctx.prisma.users.findMany({
+        where: { role_title: input },
+      });
+      if (!users) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `No users with role_uuid '${input}'`,
+        });
+      }
+      return users;
     },
   })
   // update

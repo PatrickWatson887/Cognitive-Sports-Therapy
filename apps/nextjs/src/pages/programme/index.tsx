@@ -25,7 +25,8 @@ export default function IndexPage() {
   const utils = trpc.useContext();
 
   const programmeQuery = trpc.useQuery(['programmes.all']);
-  const userQuery = trpc.useQuery(['users.all']);
+
+  const userQuery = trpc.useQuery(['users.byRole', 'premium']);
   const addProgramme = trpc.useMutation('programmes.add', {
     onSettled() {
       return utils.invalidateQuery(['programmes.all']);
