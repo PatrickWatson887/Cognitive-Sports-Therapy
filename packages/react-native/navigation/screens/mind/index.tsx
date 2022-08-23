@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../RootStackPrams';
+import { MindStackParamList } from '../RootStackPrams';
 import { trpc } from '@zart/react/trpc';
 
-type mentalScreenProp = StackNavigationProp<RootStackParamList, 'Mind'>;
+type mentalScreenProp = StackNavigationProp<MindStackParamList, 'Mind'>;
 
 export function MentalScreen() {
   const navigation = useNavigation<mentalScreenProp>();
@@ -24,7 +24,7 @@ export function MentalScreen() {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Explore');
+                navigation.navigate('MindDetails', { uuid: item.uuid });
               }}
             >
               <View style={styles.item}>

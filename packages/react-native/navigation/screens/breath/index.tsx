@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../RootStackPrams';
+import { BreathStackParamList } from '../RootStackPrams';
 import { trpc } from '@zart/react/trpc';
 
-type breathScreenProp = StackNavigationProp<RootStackParamList, 'Breath'>;
+type breathScreenProp = StackNavigationProp<BreathStackParamList, 'Breath'>;
 
 export function BreathScreen() {
   const navigation = useNavigation<breathScreenProp>();
@@ -24,7 +24,7 @@ export function BreathScreen() {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Explore');
+                navigation.navigate('BreathDetails', { uuid: item.uuid });
               }}
             >
               <View style={styles.item}>

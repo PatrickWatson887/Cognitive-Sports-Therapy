@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../RootStackPrams';
+import { ProgrammeStackParamList } from '../RootStackPrams';
 import { trpc } from '@zart/react/trpc';
 
 type programmesScreenProp = StackNavigationProp<
-  RootStackParamList,
+  ProgrammeStackParamList,
   'Programmes'
 >;
 
@@ -29,7 +29,7 @@ export function ProgrammesScreen() {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Explore');
+                navigation.navigate('ProgrammeDetails', { uuid: item.uuid });
               }}
             >
               <View style={styles.item}>

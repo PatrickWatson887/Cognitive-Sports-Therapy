@@ -20,14 +20,19 @@ import {
   selectIsLoggedIn,
   selectUserName,
 } from '@zart/react-native/navigation/slice/authSlice';
+import { DiariesDetails } from './screens/lifestyle/details';
+import { BreathDetails } from './screens/breath/details';
+import { BodyDetails } from './screens/physical/details';
+import { MindDetails } from './screens/mind/details';
+import { ProgrammeDetails } from './screens/programmes/details';
 
 function LifestyleStackScreen() {
   const LifestyleStack = createStackNavigator();
 
   return (
     <LifestyleStack.Navigator>
-      <LifestyleStack.Screen name="Diaries" component={LifestyleScreen} />
-      {/* <LifestyleStack.Screen name="Details" component={DetailsScreen} /> */}
+      <LifestyleStack.Screen name="Lifestyle" component={LifestyleScreen} />
+      <LifestyleStack.Screen name="DiariesDetails" component={DiariesDetails} />
     </LifestyleStack.Navigator>
   );
 }
@@ -37,8 +42,8 @@ function MindStackScreen() {
 
   return (
     <MindStack.Navigator>
-      <MindStack.Screen name="Articles" component={MentalScreen} />
-      {/* <MindStack.Screen name="Details" component={DetailsScreen} /> */}
+      <MindStack.Screen name="Mind" component={MentalScreen} />
+      <MindStack.Screen name="MindDetails" component={MindDetails} />
     </MindStack.Navigator>
   );
 }
@@ -48,8 +53,8 @@ function BodyStackScreen() {
 
   return (
     <BodyStack.Navigator>
-      <BodyStack.Screen name="Workouts" component={PhysicalScreen} />
-      {/* <BodyStack.Screen name="Details" component={DetailsScreen} /> */}
+      <BodyStack.Screen name="Body" component={PhysicalScreen} />
+      <BodyStack.Screen name="BodyDetails" component={BodyDetails} />
     </BodyStack.Navigator>
   );
 }
@@ -59,8 +64,8 @@ function BreathStackScreen() {
 
   return (
     <BreathStack.Navigator>
-      <BreathStack.Screen name="Audios" component={BreathScreen} />
-      {/* <BreathStack.Screen name="Details" component={DetailsScreen} /> */}
+      <BreathStack.Screen name="Breath" component={BreathScreen} />
+      <BreathStack.Screen name="BreathDetails" component={BreathDetails} />
     </BreathStack.Navigator>
   );
 }
@@ -70,8 +75,11 @@ function ProgrammeStackScreen() {
 
   return (
     <ProgrammesStack.Navigator>
-      <ProgrammesStack.Screen name="Settings" component={ProgrammesScreen} />
-      {/* <ProgrammesStack.Screen name="Details" component={DetailsScreen} /> */}
+      <ProgrammesStack.Screen name="Programmes" component={ProgrammesScreen} />
+      <ProgrammesStack.Screen
+        name="ProgrammeDetails"
+        component={ProgrammeDetails}
+      />
     </ProgrammesStack.Navigator>
   );
 }

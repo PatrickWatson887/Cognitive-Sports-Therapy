@@ -10,11 +10,14 @@ import { trpc } from '@zart/react/trpc';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../RootStackPrams';
+import { LifestyleStackParamList } from '../RootStackPrams';
 import { useAppSelector, useAppDispatch } from '../../../store';
 import { selectUserUuid, setRole } from '../../slice/authSlice';
 
-type lifestyleScreenProp = StackNavigationProp<RootStackParamList, 'Lifestyle'>;
+type lifestyleScreenProp = StackNavigationProp<
+  LifestyleStackParamList,
+  'Lifestyle'
+>;
 
 export function LifestyleScreen() {
   const navigation = useNavigation<lifestyleScreenProp>();
@@ -33,7 +36,7 @@ export function LifestyleScreen() {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Explore');
+                navigation.navigate('DiariesDetails', { uuid: item.uuid });
               }}
             >
               <View style={styles.item}>

@@ -13,3 +13,28 @@ export type LoginStackParamList = {
   Signup: undefined;
   ForgotPassword: undefined;
 };
+
+export type LifestyleStackParamList = {
+  Lifestyle: undefined;
+  DiariesDetails: { uuid: string };
+};
+
+export type MindStackParamList = {
+  Mind: undefined;
+  MindDetails: { uuid: string };
+};
+
+export type BodyStackParamList = {
+  Body: undefined;
+  BodyDetails: { uuid: string };
+};
+
+export type BreathStackParamList = {
+  Breath: undefined;
+  BreathDetails: { uuid: string };
+};
+
+export type ProgrammeStackParamList = {
+  Programmes: undefined;
+  ProgrammeDetails: { uuid: string };
+};

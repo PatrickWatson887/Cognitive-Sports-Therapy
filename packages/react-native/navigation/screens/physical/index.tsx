@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../RootStackPrams';
+import { BodyStackParamList } from '../RootStackPrams';
 import { trpc } from '@zart/react/trpc';
 
-type physicalScreenProp = StackNavigationProp<RootStackParamList, 'Body'>;
+type physicalScreenProp = StackNavigationProp<BodyStackParamList, 'Body'>;
 
 export function PhysicalScreen() {
   const navigation = useNavigation<physicalScreenProp>();
@@ -25,7 +25,7 @@ export function PhysicalScreen() {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Explore');
+                navigation.navigate('BodyDetails', { uuid: item.uuid });
               }}
             >
               <View style={styles.item}>
