@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { trpc } from '../../utils/trpc';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
 
 type FormValues = {
   title: string;
@@ -16,7 +15,6 @@ type FormValues = {
 export default function IndexPage() {
   const { register, handleSubmit } = useForm<FormValues>();
   const utils = trpc.useContext();
-  const [file, setFile] = useState<any>();
 
   const audioQuery = trpc.useQuery(['audios.all']);
   const addAudio = trpc.useMutation('audios.add', {
@@ -64,10 +62,6 @@ export default function IndexPage() {
             type="file"
             className="border border-2 mb-4 rounded-md"
             {...register('image_url')}
-            onChange={(e) => {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              setFile(e.target.files![0]);
-            }}
           />
           <label>Audio Url</label>
           <input

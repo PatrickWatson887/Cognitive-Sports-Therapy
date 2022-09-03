@@ -3,8 +3,8 @@ import { trpc } from 'utils/trpc';
 import NextError from 'next/error';
 
 export default function PostViewPage() {
-  const uuid = useRouter().query.id as string;
-  const roleQuery = trpc.useQuery(['roles.byUuid', uuid]);
+  const title = useRouter().query.title as string;
+  const roleQuery = trpc.useQuery(['roles.byTitle', title]);
   if (roleQuery.error) {
     const statusCode = roleQuery.error.data?.httpStatus ?? 500;
     return (

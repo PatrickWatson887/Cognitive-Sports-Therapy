@@ -20,7 +20,6 @@ export default function IndexPage() {
   const { register, handleSubmit } = useForm<FormValues>();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [file, setFile] = useState<any>();
 
   const utils = trpc.useContext();
 
@@ -75,10 +74,6 @@ export default function IndexPage() {
             type="file"
             className="border border-2 mb-4 rounded-md"
             {...register('image_url')}
-            onChange={(e) => {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              setFile(e.target.files![0]);
-            }}
           />
           <label>Author</label>
           <input

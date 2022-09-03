@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { trpc } from '../../utils/trpc';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
-import axios from 'axios';
 
 type FormValues = {
   title: string;
@@ -16,7 +14,6 @@ type FormValues = {
 export default function IndexPage() {
   const { register, handleSubmit } = useForm<FormValues>();
   const utils = trpc.useContext();
-  const [file, setFile] = useState<any>();
 
   const articleQuery = trpc.useQuery(['articles.all']);
   const addArticle = trpc.useMutation('articles.add', {
@@ -25,26 +22,8 @@ export default function IndexPage() {
     },
   });
 
-  const uploadFile = async () => {
-    const { data } = await axios.post('api/aws/s3', {
-      name: file.name,
-      type: file.type,
-    });
-    const options = {
-      headers: {
-        'Content-Type': file.type,
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
-
-    const url = data.url;
-    await axios.put(url, file, options);
-    // setFile(null);
-  };
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      // await uploadFile();
       await addArticle.mutateAsync({
         title: data.title,
         image_url: '',
@@ -102,10 +81,6 @@ export default function IndexPage() {
             type="file"
             className="border border-2 mb-4 rounded-md"
             {...register('image_url')}
-            onChange={(e) => {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              setFile(e.target.files![0]);
-            }}
           />
           <input className="bg-green-200 rounded-md" type="submit" />
         </div>
