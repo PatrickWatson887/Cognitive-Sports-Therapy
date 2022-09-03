@@ -66,12 +66,15 @@ export default function IndexPage() {
           {userQuery.status === 'loading' && '(loading)'}
         </h2>
         {userQuery.data?.map((item) => (
-          <article key={item.uuid}>
-            <h3>{item.username}</h3>
-            <Link href={`/user/${item.uuid}`}>
-              <a>View more</a>
-            </Link>
-          </article>
+          <>
+            <article key={item.uuid}>
+              <h3>{item.username}</h3>
+              <Link href={`/user/${item.uuid}`}>
+                <a>View more</a>
+              </Link>
+            </article>
+            <br />
+          </>
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

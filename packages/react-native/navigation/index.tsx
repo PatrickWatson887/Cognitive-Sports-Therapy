@@ -34,7 +34,7 @@ function LifestyleStackScreen() {
 
   return (
     <LifestyleStack.Navigator>
-      <LifestyleStack.Screen name="Lifestyle" component={LifestyleScreen} />
+      <LifestyleStack.Screen name="LifestyleHome" component={LifestyleScreen} />
       <LifestyleStack.Screen name="DiariesDetails" component={DiariesDetails} />
     </LifestyleStack.Navigator>
   );
@@ -45,7 +45,7 @@ function MindStackScreen() {
 
   return (
     <MindStack.Navigator>
-      <MindStack.Screen name="Mind" component={MentalScreen} />
+      <MindStack.Screen name="MindHome" component={MentalScreen} />
       <MindStack.Screen name="MindDetails" component={MindDetails} />
     </MindStack.Navigator>
   );
@@ -56,7 +56,7 @@ function BodyStackScreen() {
 
   return (
     <BodyStack.Navigator>
-      <BodyStack.Screen name="Body" component={PhysicalScreen} />
+      <BodyStack.Screen name="BodyHome" component={PhysicalScreen} />
       <BodyStack.Screen name="BodyDetails" component={BodyDetails} />
     </BodyStack.Navigator>
   );
@@ -67,7 +67,7 @@ function BreathStackScreen() {
 
   return (
     <BreathStack.Navigator>
-      <BreathStack.Screen name="Breath" component={BreathScreen} />
+      <BreathStack.Screen name="BreathHome" component={BreathScreen} />
       <BreathStack.Screen name="BreathDetails" component={BreathDetails} />
     </BreathStack.Navigator>
   );
@@ -78,7 +78,10 @@ function ProgrammeStackScreen() {
 
   return (
     <ProgrammesStack.Navigator>
-      <ProgrammesStack.Screen name="Programmes" component={ProgrammesScreen} />
+      <ProgrammesStack.Screen
+        name="ProgrammesHome"
+        component={ProgrammesScreen}
+      />
       <ProgrammesStack.Screen
         name="ProgrammeDetails"
         component={ProgrammeDetails}

@@ -40,12 +40,15 @@ export default function IndexPage() {
           {audioQuery.status === 'loading' && '(loading)'}
         </h2>
         {audioQuery.data?.map((item) => (
-          <article key={item.uuid}>
-            <h3>{item.title}</h3>
-            <Link href={`/audio/${item.uuid}`}>
-              <a>View more</a>
-            </Link>
-          </article>
+          <>
+            <article key={item.uuid}>
+              <h3>{item.title}</h3>
+              <Link href={`/audio/${item.uuid}`}>
+                <a>View more</a>
+              </Link>
+            </article>
+            <br />
+          </>
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

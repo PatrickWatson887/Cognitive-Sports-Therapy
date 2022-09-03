@@ -29,16 +29,19 @@ export default function IndexPage() {
     <>
       <div className="grid grid-column-1 mx-auto w-1/3 shadow p-4 rounded-xl">
         <h2 className="mx-auto">
-          Sponsors
+          Videos
           {videoQuery.status === 'loading' && '(loading)'}
         </h2>
         {videoQuery.data?.map((item) => (
-          <article key={item.uuid}>
-            <h3>{item.title}</h3>
-            <Link href={`/video/${item.uuid}`}>
-              <a>View more</a>
-            </Link>
-          </article>
+          <>
+            <article key={item.uuid}>
+              <h3>{item.title}</h3>
+              <Link href={`/video/${item.uuid}`}>
+                <a>View more</a>
+              </Link>
+            </article>
+            <br />
+          </>
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

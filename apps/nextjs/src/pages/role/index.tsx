@@ -33,12 +33,15 @@ export default function IndexPage() {
           {roleQuery.status === 'loading' && '(loading)'}
         </h2>
         {roleQuery.data?.map((item) => (
-          <article key={item.uuid}>
-            <h3>{item.title}</h3>
-            <Link href={`/role/${item.uuid}`}>
-              <a>View more</a>
-            </Link>
-          </article>
+          <>
+            <article key={item.title}>
+              <h3>{item.title}</h3>
+              <Link href={`/role/${item.title}`}>
+                <a>View more</a>
+              </Link>
+            </article>
+            <br />
+          </>
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

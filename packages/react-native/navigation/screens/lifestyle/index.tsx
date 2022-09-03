@@ -11,8 +11,6 @@ import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LifestyleStackParamList } from '../RootStackPrams';
-import { useAppSelector, useAppDispatch } from '../../../store';
-import { selectUserUuid, setRole } from '../../slice/authSlice';
 
 type lifestyleScreenProp = StackNavigationProp<
   LifestyleStackParamList,
@@ -23,7 +21,6 @@ export function LifestyleScreen() {
   const navigation = useNavigation<lifestyleScreenProp>();
 
   const diaries = trpc.useQuery(['diaries.all']);
-
 
   return (
     <SafeAreaView style={styles.container}>

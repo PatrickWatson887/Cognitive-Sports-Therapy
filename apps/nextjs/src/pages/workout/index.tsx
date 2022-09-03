@@ -42,12 +42,15 @@ export default function IndexPage() {
           {workoutQuery.status === 'loading' && '(loading)'}
         </h2>
         {workoutQuery.data?.map((item) => (
-          <article key={item.uuid}>
-            <h3>{item.title}</h3>
-            <Link href={`/workout/${item.uuid}`}>
-              <a>View more</a>
-            </Link>
-          </article>
+          <>
+            <article key={item.uuid}>
+              <h3>{item.title}</h3>
+              <Link href={`/workout/${item.uuid}`}>
+                <a>View more</a>
+              </Link>
+            </article>
+            <br />
+          </>
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

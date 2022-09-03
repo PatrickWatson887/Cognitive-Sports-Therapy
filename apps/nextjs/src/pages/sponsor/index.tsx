@@ -33,12 +33,15 @@ export default function IndexPage() {
           {sponsorQuery.status === 'loading' && '(loading)'}
         </h2>
         {sponsorQuery.data?.map((item) => (
-          <article key={item.uuid}>
-            <h3>{item.title}</h3>
-            <Link href={`/sponsor/${item.uuid}`}>
-              <a>View more</a>
-            </Link>
-          </article>
+          <>
+            <article key={item.uuid}>
+              <h3>{item.title}</h3>
+              <Link href={`/sponsor/${item.uuid}`}>
+                <a>View more</a>
+              </Link>
+            </article>
+            <br />
+          </>
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

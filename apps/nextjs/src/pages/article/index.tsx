@@ -44,7 +44,7 @@ export default function IndexPage() {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      await uploadFile();
+      // await uploadFile();
       await addArticle.mutateAsync({
         title: data.title,
         image_url: '',
@@ -63,12 +63,15 @@ export default function IndexPage() {
           {articleQuery.status === 'loading' && '(loading)'}
         </h2>
         {articleQuery.data?.map((item) => (
-          <article key={item.uuid}>
-            <h3>{item.title}</h3>
-            <Link href={`/article/${item.uuid}`}>
-              <a>View more</a>
-            </Link>
-          </article>
+          <>
+            <article key={item.uuid}>
+              <h3>{item.title}</h3>
+              <Link href={`/article/${item.uuid}`}>
+                <a>View more</a>
+              </Link>
+            </article>
+            <br />
+          </>
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
